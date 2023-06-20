@@ -63,40 +63,46 @@ for i = 1: opt.n_init_learning
     net = vbhafa(data, max_nstates, max_ldim, opt.n_init_iter, opt.tol, opt.noise, 1);
     net_trial{i} = net;
 end
+
 for i=1:opt.n_init_learning
     ll(i) = net_trial{i}.Fhist(end,end);
 end
+
 display(' ')
 display('selecting the best initialization and the best initial model')
 [~, id_net] = max(ll);
 net_best = net_trial{id_net};
+
 display(' ')
 display(['final learning using initial model ', num2str(id_net), '...'])
 net_opt = vbhafa(data, max_nstates, max_ldim, opt.n_iter, opt.tol, opt.noise, 1, net_best);
 [~, estStatesCell] =  estimateStatesByVitterbi(data, net_opt.params, net_opt.logOutProbs);
+
 [fractional_occupancy_group, mean_life_group]  = compute_occupancy_and_mean_life_group_wise(estStatesCell, max_nstates);
 [fractional_occupancy_subj, mean_life_subj]  = compute_occupancy_and_mean_life_subject_wise(estStatesCell, max_nstates);
+
 id_of_dominant_states_group = getDominantStateIdsGroup(estStatesCell, max_nstates);
 id_of_dominant_states_subject = getDominantStateIdsSubject(estStatesCell, max_nstates);
+
 display(' ')
-display(['final wieghts:', mat2str(sum(net_opt.hidden.Qns))]);
+display(['final weights:', mat2str(sum(net_opt.hidden.Qns))]);
 display('done.')
 
-% building model
+%% Building Model Struct
 model.net = net_opt;
-model.estimated_covariance = getCovariance(net_opt);
-model.estimated_mean = getMean(net_opt);
-model.temporal_evolution_of_states = estStatesCell;
-model.posterior_probabilities = net_opt.hidden.QnsCell;
-model.joint_posterior_probabilities = net_opt.hidden.Qnss;
-model.id_of_remaining_states = getRemainingStateIds(model.temporal_evolution_of_states);
-model.id_of_dominant_states_group_wise = id_of_dominant_states_group;
-model.id_of_dominant_states_subject_wise = id_of_dominant_states_subject;
-model.state_transition_probabilities = net_opt.params.stran;
-model.fractional_occupancy_group_wise = fractional_occupancy_group;
-model.mean_lifetime_group_wise = mean_life_group;
-model.fractional_occupancy_subject_wise = fractional_occupancy_subj;
-model.mean_lifetime_subject_wise = mean_life_subj;
+model.estimated_covariance                 = getCovariance(net_opt);
+model.estimated_mean                       = getMean(net_opt);
+model.temporal_evolution_of_states         = estStatesCell;
+model.posterior_probabilities              = net_opt.hidden.QnsCell;
+model.joint_posterior_probabilities        = net_opt.hidden.Qnss;
+model.id_of_remaining_states               = getRemainingStateIds(model.temporal_evolution_of_states);
+model.id_of_dominant_states_group_wise     = id_of_dominant_states_group;
+model.id_of_dominant_states_subject_wise   = id_of_dominant_states_subject;
+model.state_transition_probabilities       = net_opt.params.stran;
+model.fractional_occupancy_group_wise      = fractional_occupancy_group;
+model.mean_lifetime_group_wise             = mean_life_group;
+model.fractional_occupancy_subject_wise    = fractional_occupancy_subj;
+model.mean_lifetime_subject_wise           = mean_life_subj;
 
 
 
