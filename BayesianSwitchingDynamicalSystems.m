@@ -32,7 +32,10 @@ function model = BayesianSwitchingDynamicalSystems(data, max_nstates, max_ldim, 
 
 % taghia@stanford.edu (2016)
 
+%% Input Parsing
+
 if nargin<3
+    warning('Using Default Options')
     max_ldim = size(data{1}, 1) - 1;
     opt.n_iter = 100;
     opt.n_init_iter = 10;
@@ -43,6 +46,7 @@ if nargin<3
 end
 
 if nargin<4
+    warning('Using Default Options')
     opt.n_iter = 100;
     opt.n_init_iter = 10;
     opt.tol = 1e-3;
@@ -51,7 +55,8 @@ if nargin<4
     opt.p_ref = 0.01;
 end
 
-% modeling
+%% Modelling
+
 for i = 1: opt.n_init_learning
     display(' ')
     display(['initial learning: ', num2str(i), '/' num2str(opt.n_init_learning)])
