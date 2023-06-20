@@ -2,7 +2,7 @@
 
 function model = BayesianSwitchingDynamicalSystems(data, max_nstates, max_ldim, opt)
 
-%Inputs:
+%   INPUT
 %	data                                                    : {data_subj1, data_subj2,...,data_subjS}, data_subj1 is a D-by-N matrix where D is dimension  and N is the number of samples
 %	max_nstates                                             : maximum number of states (set to a value greater than the expected number of states)
 %	max_ldim                                                : bound on the latent space dimensionality. default: max_ldim = D-1. max_ldim must be smaller  than dimensionality of data
