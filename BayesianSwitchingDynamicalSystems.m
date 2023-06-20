@@ -3,32 +3,32 @@
 function model = BayesianSwitchingDynamicalSystems(data, max_nstates, max_ldim, opt)
 
 %Inputs:
-%	data                             : {data_subj1, data_subj2,...,data_subjS}, data_subj1 is a D-by-N matrix where D is dimension  and N is the number of samples
-%	max_nstates                 : maximum number of states (set to a value greater than the expected number of states)
-%	max_ldim                      : bound on the latent space dimensionality. default: max_ldim = D-1. max_ldim must be smaller  than dimensionality of data
-%	opt.n_iter                      : number of iteration of the variational inference
-%   opt.i_init_iter                 : number of iterations for the initial learning
-%   opt.tol                          : tolerance (1e-3)
-%	opt.noise                      : type of measurement noise, can be either 1 or 0
+%	data                                                    : {data_subj1, data_subj2,...,data_subjS}, data_subj1 is a D-by-N matrix where D is dimension  and N is the number of samples
+%	max_nstates                                             : maximum number of states (set to a value greater than the expected number of states)
+%	max_ldim                                                : bound on the latent space dimensionality. default: max_ldim = D-1. max_ldim must be smaller  than dimensionality of data
+%	opt.n_iter                                              : number of iteration of the variational inference
+%   opt.i_init_iter                                         : number of iterations for the initial learning
+%   opt.tol                                                 : tolerance (1e-3)
+%	opt.noise                                               : type of measurement noise, can be either 1 or 0
 %							                 - if opt.noise=1, noise variance the same across dimensions
 %							                 - if opt.noise=0 (default), noise variance is allowed to vary across dimensions
-%	opt.n_init_learning :    train a number of models using random initialization and choosing the best initial model (default: 10)
+%	opt.n_init_learning                                     : train a number of models using random initialization and choosing the best initial model (default: 10)
 
-%Outputs:
-%	  model.net 					                                : posterior parameters over all model parameters  (advanced usage)
+%     OUTPUT
+%	  model.net 					                        : posterior parameters over all model parameters  (advanced usage)
 %	  model.estimated_mean 		                            : estimated mean of each state (group-level)
-%	  model.estimated_covariance                          : estimated covariance of each state (group-level)
+%	  model.estimated_covariance                            : estimated covariance of each state (group-level)
 %	  model.posterior_probabilities		                    : posterior probabilities of states across time for each subject q(Z)
-%	  model.joint_posterior_probabilities	              : joint posterior probabilities of states across time for each subject q(Z_n-1, Z)
-%	  model.state_transition_probabilities	             : HMM estimated transition probabilities across states
-%     model.temporal_evolution_of_states               : estimated temporal evolution of states
-%     model.fractional_occupancy_group_wise         : occupancy rate of each state computed in group sense
-%     model.mean_lifetime_group_wise                   : mean life time of each state computed in group sense
-%     model.id_of_dominant_states_group_wise       : id of dominant states group wise
-%     model.fractional_occupancy_subject_wise       : occupancy rate of each state computed in subject sense
-%     model.mean_lifetime_subject_wise                 : mean life time of each state computed in subject sense
-%     model.id_of_dominant_states_subject_wise     : id of dominant states subject wise
-%     model.id_of_remaining_states                        : id of remaining states for each subject
+%	  model.joint_posterior_probabilities	                : joint posterior probabilities of states across time for each subject q(Z_n-1, Z)
+%	  model.state_transition_probabilities	                : HMM estimated transition probabilities across states
+%     model.temporal_evolution_of_states                    : estimated temporal evolution of states
+%     model.fractional_occupancy_group_wise                 : occupancy rate of each state computed in group sense
+%     model.mean_lifetime_group_wise                        : mean life time of each state computed in group sense
+%     model.id_of_dominant_states_group_wise                : id of dominant states group wise
+%     model.fractional_occupancy_subject_wise               : occupancy rate of each state computed in subject sense
+%     model.mean_lifetime_subject_wise                      : mean life time of each state computed in subject sense
+%     model.id_of_dominant_states_subject_wise              : id of dominant states subject wise
+%     model.id_of_remaining_states                          : id of remaining states for each subject
 
 % taghia@stanford.edu (2016)
 
